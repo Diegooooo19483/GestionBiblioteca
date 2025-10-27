@@ -18,4 +18,44 @@ def crear_autor(autor: AutorCreate, session: Session = Depends(get_session)):
     session.refresh(nuevo_autor)
     return nuevo_autor
 
+@router.get("/", response_model=list[AutorRead])
+def listar_autores(activo: Optional[bool] = None, session: Session = Depends(get_session)):
+    query = select(Autor)
+    if activo is not None:
+        query = query.where(Autor.activo == activo)
+    return session.exec(query).all()
+
+
+
+@router.get("/pais/{pais}")
+def filtrar_autores_por_pais(pais: str, session: Session = Depends(get_session)):
+    autores = session.exec(select(Autor).where(Autor.pais_origen == pais)).all()
+    return autores
+
+
+@router.get("/{autor_id}/libros")
+def libros_por_autor(autor_id: int, session: Session = Depends(get_session)):
+    autor = session.get(Autor, autor_id)
+    if not autor:
+        raise HTTPException(status_code=404, detail="Autor no encontrado")
+    return autor, autor.libros
+
+
+@router.put("/{autor_id}", response_model=AutorRead)
+def actualizar_autor(autor_id: int, data: AutorCreate, session: Session = Depends(get_session)):
+    autor = session.get(Autor, autor_id)
+
+    if not autor:
+        raise HTTPException(status_code=404, detail="autor no encontrado")
+
+    if data.nombre is not None:
+        autor.nombre = data.nombre
+    if data.pais_origen is not None:
+        autor.pais_origen = data.pais_origen
+    if data.anio_nacimiento is not None:
+        autor.anio_nacimiento = data.anio_nacimiento
+    session.commit()
+    session.refresh(autor)
+    return autor
+
 
