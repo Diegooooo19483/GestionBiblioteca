@@ -48,3 +48,10 @@ pip freeze > requirements.txt
 uvicorn main:app --reload
 
 ```
+
+## 📊 Poblar datos
+
+```bash
+
+python seed.py
+```
