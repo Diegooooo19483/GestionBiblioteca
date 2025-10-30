@@ -12,7 +12,7 @@ def crear_autor(autor: AutorCreate, session: Session = Depends(get_session)):
     if existe:
         raise HTTPException(status_code=400, detail="Ya existe un autor con ese nombre")
 
-    nuevo_autor = Autor(**autor.model_dump())  # crea desde el modelo limpio
+    nuevo_autor = Autor(**autor.model_dump())###############v
     session.add(nuevo_autor)
     session.commit()
     session.refresh(nuevo_autor)
@@ -23,13 +23,13 @@ def listar_autores(activo: Optional[bool] = None, session: Session = Depends(get
     query = select(Autor)
     if activo is not None:
         query = query.where(Autor.activo == activo)
-    return session.exec(query).all()
+    return session.exec(query).all()##################
 
 
 
 @router.get("/pais/{pais}")
 def filtrar_autores_por_pais(pais: str, session: Session = Depends(get_session)):
-    autores = session.exec(select(Autor).where(Autor.pais_origen == pais)).all()
+    autores = session.exec(select(Autor).where(Autor.pais_origen == pais)).all()##############all
     return autores
 
 
@@ -58,4 +58,32 @@ def actualizar_autor(autor_id: int, data: AutorCreate, session: Session = Depend
     session.refresh(autor)
     return autor
 
+@router.delete("/desactivar/{autor_id}")
+def desactivar_autor(autor_id: int, session: Session = Depends(get_session)):
+    autor = session.get(Autor, autor_id)
+    if not autor:
+        raise HTTPException(status_code=404, detail="Autor no encontrado")
 
+    autor.activo = False
+    for libro in autor.libros:
+
+        if len(libro.autores) == 1:
+            libro.activo = False
+    session.commit()
+    return {"mensaje": f"Autor {autor.nombre} desactivado y libros únicos desactivados."}
+
+@router.put("/{autor_id}/activar", response_model=AutorRead)
+def activar_autor(autor_id: int, session: Session = Depends(get_session)):
+    autor = session.get(Autor, autor_id)
+    if not autor:
+        raise HTTPException(404, "Autor no encontrado")
+
+    autor.activo = True
+    for libro in autor.libros:
+        # si el libro solo tiene ese autor
+        if len(libro.autores) == 1:
+            libro.activo = True
+
+    session.commit()
+    session.refresh(autor)
+    return autor
