@@ -18,7 +18,7 @@ def crear_libro(libro: LibroCreate, session: Session = Depends(get_session)):
         copias_disponibles=libro.copias_disponibles
     )
     if libro.autores_ids:
-        autores = session.exec(select(Autor).where(Autor.id.in_(libro.autores_ids))).all()#####################
+        autores = session.exec(select(Autor).where(Autor.id.in_(libro.autores_ids))).all()
         nuevo_libro.autores = autores
     session.add(nuevo_libro)
     session.commit()
@@ -52,7 +52,7 @@ def obtener_libro(libro_id: int, session: Session = Depends(get_session)):
 @router.patch("/{libro_id}", response_model=LibroRead)
 def actualizar_parcial_libro(
         libro_id: int,
-        data: LibroCreate,  # Cambiado a LibroUpdate
+        data: LibroCreate,
         session: Session = Depends(get_session)
 ):
     libro = session.get(Libro, libro_id)
@@ -60,13 +60,10 @@ def actualizar_parcial_libro(
     if not libro:
         raise HTTPException(404, "Libro no encontrado")
 
-    # Actualizar título
     if data.titulo is not None:
         libro.titulo = data.titulo
 
-    # Actualizar ISBN (con validación)
     if data.isbn is not None:
-        # Verificar que no exista otro libro con ese ISBN
         libro_existente = session.exec(
             select(Libro).where(Libro.isbn == data.isbn, Libro.id != libro_id)
         ).first()
@@ -76,21 +73,17 @@ def actualizar_parcial_libro(
 
         libro.isbn = data.isbn
 
-    # Actualizar año
     if data.anio_publicacion is not None:
         libro.anio_publicacion = data.anio_publicacion
 
-    # Actualizar copias
     if data.copias_disponibles is not None:
         libro.copias_disponibles = data.copias_disponibles
 
-    # Actualizar autores
     if data.autores_ids is not None:
         autores = session.exec(
             select(Autor).where(Autor.id.in_(data.autores_ids))
         ).all()
 
-        # Validar que se encontraron todos los autores
         if len(autores) != len(data.autores_ids):
             raise HTTPException(404, "Uno o más autores no encontrados")
 
