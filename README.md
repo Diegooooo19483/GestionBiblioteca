@@ -55,3 +55,35 @@ uvicorn main:app --reload
 
 python seed.py
 ```
+##  Mapa de endpoints
+
+### AUTORES
+| Método   | Endpoint              | Descripción                                                                               |
+| -------- | --------------------- | ----------------------------------------------------------------------------------------- |
+| `GET`    | `/autores/`           | Lista todos los autores (activos o inactivos, según el parámetro `activos`).              |
+| `GET`    | `/autores/{autor_id}` | Obtiene la información de un autor específico.                                            |
+| `POST`   | `/autores/`           | Crea un nuevo autor (recibe nombre, país, año nacimiento).                                |
+| `PUT`    | `/autores/{autor_id}` | Actualiza los datos de un autor existente. Si un campo no se envía, conserva el anterior. |
+| `DELETE` | `/autores/{autor_id}` | Desactiva al autor (no elimina). Si el autor es único de un libro, desactiva ese libro.   |
+| `GET`    | `/autores/filtrar/`   | Filtra autores por país.                                                                  |
+
+### LIBROS
+
+| Método   | Endpoint                             | Descripción                                                 |
+| -------- | ------------------------------------ | ----------------------------------------------------------- |
+| `GET`    | `/libros/`                           | Lista todos los libros existentes.                          |
+| `GET`    | `/libros/{libro_id}`                 | Obtiene un libro específico por ID.                         |
+| `POST`   | `/libros/`                           | Crea un nuevo libro con autores asociados.                  |
+| `PUT`    | `/libros/{libro_id}`                 | Actualiza un libro (mantiene valores previos si se omiten). |
+| `DELETE` | `/libros/{libro_id}`                 | Desactiva un libro sin eliminarlo.                          |
+| `GET`    | `/libros/por_autor/{autor_id}`       | Lista todos los libros de un autor específico.              |
+| `GET`    | `/libros/autores/{libro_id}`         | Muestra los autores asociados a un libro.                   |
+| `GET`    | `/libros/por_anio/{anio}`            | Lista todos los libros publicados en un año determinado.    |
+| `POST`   | `/libros/{libro_id}/copias/eliminar` | Elimina una copia de un libro y actualiza el conteo.        |
+
+### RELACIONES
+| Modelo                   | Atributos principales                                                      | Relaciones                                                               |
+| ------------------------ | -------------------------------------------------------------------------- | ------------------------------------------------------------------------ |
+| **Autor**                | `id`, `nombre`, `pais`, `anio_nacimiento`, `activo`                        | Relación **muchos a muchos** con `Libro`                                 |
+| **Libro**                | `id`, `titulo`, `isbn`, `anio_publicacion`, `copias_disponibles`, `activo` | Relación **muchos a muchos** con `Autor`                                 |
+| **Relación Autor-Libro** | Tabla intermedia (many-to-many)                                            | Un autor puede tener varios libros y un libro puede tener varios autores |
