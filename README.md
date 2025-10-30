@@ -94,3 +94,21 @@ python seed.py
 | **Autor**                | `id`, `nombre`, `pais`, `anio_nacimiento`, `activo`                        | Relación N:M  **muchos a muchos** con `Libro`                      |
 | **Libro**                | `id`, `titulo`, `isbn`, `anio_publicacion`, `copias_disponibles`, `activo` | Relación N:M  **muchos a muchos** con `Autor`                     |
 | **Relación Autor-Libro** | Tabla intermedia (many-to-many)                                            | Relación N:M                                                       |
+
+
+### 📎 FUNCIONES PRINCIPALES
+
+| Función                       | Descripción                                                                                              |
+| ----------------------------- | -------------------------------------------------------------------------------------------------------- |
+| **crear_libro()**             | Registra un nuevo libro con su título, ISBN, año, número de copias y los autores asociados.              |
+| **listar_libros()**           | Muestra todos los libros almacenados en la base de datos.                                                |
+| **actualizar_libro()**        | Permite modificar parcialmente los datos del libro
+| **eliminar_libro()**          | El libro se marca como inactivo.          |
+
+| Función                        | Descripción                                                                                                                                 |
+| ------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------- |
+| **crear_autor()**              | Crea un nuevo autor en la base de datos con nombre, país y año de nacimiento. Valida los datos antes de guardar.                            |
+| **listar_autores()**           | Retorna la lista de autores registrados, con opción para filtrar por autores activos o inactivos.                                           |
+| **actualizar_autor()**         | Permite modificar los datos de un autor existente. |
+| **eliminar_autor()**           | Realiza un borrado lógico, cambiando el estado de “activo” a `False`  Si se desactiva el autor, también se desactivan los libros en los que sea el único autor                                               |
+
