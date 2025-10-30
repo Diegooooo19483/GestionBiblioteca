@@ -1,10 +1,7 @@
 from sqlmodel import SQLModel, Session, create_engine
+from config import settings
 
-sqlite_file_name = "BibliotecaApi.db"
-sqlite_url = f"sqlite:///{sqlite_file_name}"
-
-
-engine = create_engine(sqlite_url)
+engine = create_engine(settings.DATABASE_URL, echo=settings.DEBUG)
 
 def get_session():
     with Session(engine) as session:
