@@ -54,9 +54,17 @@ uvicorn main:app --reload
 
 python seed.py
 ```
-##  Mapa de endpoints
+## 🗒️ Clases
+| Clase           | Atributos                                                                             |
+| --------------- | ------------------------------------------------------------------------------------- |
+| **Autor**       | `id`, `nombre`, `pais`, `anio_nacimiento`, `activo`, `libros`                         |
+| **Libro**       | `id`, `titulo`, `isbn`, `anio_publicacion`, `copias_disponibles`, `activo`, `autores` |
+| **AutorLibro**  | `autor_id`, `libro_id`                                                                |
 
-### AUTORES
+
+## 🗺️ Mapa de endpoints
+
+### 🎓 AUTORES
 | Método   | Endpoint              | Descripción                                                                               |
 | -------- | --------------------- | ----------------------------------------------------------------------------------------- |
 | `GET`    | `/autores/`           | Lista todos los autores (activos o inactivos, según el parámetro `activos`).              |
@@ -66,7 +74,7 @@ python seed.py
 | `DELETE` | `/autores/{autor_id}` | Desactiva al autor (no elimina). Si el autor es único de un libro, desactiva ese libro.   |
 | `GET`    | `/autores/filtrar/`   | Filtra autores por país.                                                                  |
 
-### LIBROS
+### 📒 LIBROS
 
 | Método   | Endpoint                             | Descripción                                                 |
 | -------- | ------------------------------------ | ----------------------------------------------------------- |
@@ -80,7 +88,7 @@ python seed.py
 | `GET`    | `/libros/por_anio/{anio}`            | Lista todos los libros publicados en un año determinado.    |
 | `POST`   | `/libros/{libro_id}/copias/eliminar` | Elimina una copia de un libro y actualiza el conteo.        |
 
-### RELACIONES
+### 📎 RELACIONES
 | Modelo                   | Atributos principales                                                      | Relaciones                                                         |
 | ------------------------ | -------------------------------------------------------------------------- | ------------------------------------------------------------------ |
 | **Autor**                | `id`, `nombre`, `pais`, `anio_nacimiento`, `activo`                        | Relación N:M  **muchos a muchos** con `Libro`                      |
