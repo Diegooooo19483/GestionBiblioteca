@@ -11,7 +11,6 @@ Aplicación desarrollada con **FastAPI** y **SQLModel** para gestionar **autores
 - ⚡ **FastAPI**
 - 🗃️ **SQLModel / SQLAlchemy**
 - 🔥 **Uvicorn**
-- 🧩 **python-dotenv** (para gestionar variables de entorno)
 
 ---
 
@@ -82,8 +81,8 @@ python seed.py
 | `POST`   | `/libros/{libro_id}/copias/eliminar` | Elimina una copia de un libro y actualiza el conteo.        |
 
 ### RELACIONES
-| Modelo                   | Atributos principales                                                      | Relaciones                                                               |
-| ------------------------ | -------------------------------------------------------------------------- | ------------------------------------------------------------------------ |
-| **Autor**                | `id`, `nombre`, `pais`, `anio_nacimiento`, `activo`                        | Relación **muchos a muchos** con `Libro`                                 |
-| **Libro**                | `id`, `titulo`, `isbn`, `anio_publicacion`, `copias_disponibles`, `activo` | Relación **muchos a muchos** con `Autor`                                 |
-| **Relación Autor-Libro** | Tabla intermedia (many-to-many)                                            | Un autor puede tener varios libros y un libro puede tener varios autores |
+| Modelo                   | Atributos principales                                                      | Relaciones                                                         |
+| ------------------------ | -------------------------------------------------------------------------- | ------------------------------------------------------------------ |
+| **Autor**                | `id`, `nombre`, `pais`, `anio_nacimiento`, `activo`                        | Relación N:M  **muchos a muchos** con `Libro`                      |
+| **Libro**                | `id`, `titulo`, `isbn`, `anio_publicacion`, `copias_disponibles`, `activo` | Relación N:M  **muchos a muchos** con `Autor                       |
+| **Relación Autor-Libro** | Tabla intermedia (many-to-many)                                            | Relación N:M                                                       |
