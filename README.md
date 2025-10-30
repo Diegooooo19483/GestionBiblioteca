@@ -84,5 +84,5 @@ python seed.py
 | Modelo                   | Atributos principales                                                      | Relaciones                                                         |
 | ------------------------ | -------------------------------------------------------------------------- | ------------------------------------------------------------------ |
 | **Autor**                | `id`, `nombre`, `pais`, `anio_nacimiento`, `activo`                        | Relación N:M  **muchos a muchos** con `Libro`                      |
-| **Libro**                | `id`, `titulo`, `isbn`, `anio_publicacion`, `copias_disponibles`, `activo` | Relación N:M  **muchos a muchos** con `Autor                       |
+| **Libro**                | `id`, `titulo`, `isbn`, `anio_publicacion`, `copias_disponibles`, `activo` | Relación N:M  **muchos a muchos** con `Autor`                     |
 | **Relación Autor-Libro** | Tabla intermedia (many-to-many)                                            | Relación N:M                                                       |
